@@ -13,16 +13,29 @@ namespace ex2
         {
             string[] files = Directory.GetFiles(Directory.GetCurrentDirectory());
             Regex regexExtForImage = new Regex(@"^\.((bmp)|(gif)|(tiff?)|(jpe?g)|(png))$", RegexOptions.IgnoreCase);
-            foreach(string file in files) 
+            foreach (string file in files)
             {
-                if(regexExtForImage.IsMatch(files[0]))
+                try
                 {
-
+                        using (Bitmap bitmap = new Bitmap(file))
+                        {
+                            bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                            string newFileName = Path.Combine
+                            (
+                                Path.GetDirectoryName(file),
+                                Path.GetFileNameWithoutExtension(file) + "-mirrored.gif"
+                            );
+                            bitmap.Save(newFileName, System.Drawing.Imaging.ImageFormat.Gif);
+                        }
+                }
+                catch
+                {
+                    if (regexExtForImage.IsMatch(Path.GetExtension(file)))
+                    {
+                        MessageBox.Show($"Файл '{file}' не містить зображення, хоча його розширення це припускає.");
+                    }
                 }
             }
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
         }
     }
 }
