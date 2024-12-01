@@ -62,12 +62,12 @@ namespace ex
                     count++;
                     sum += (double)mult;
                 }
+                Console.WriteLine(sum / count);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Unexpected exception: " + e.Message);
             }
-            Console.WriteLine(sum/count);
             Console.ReadLine();
         }
     }
