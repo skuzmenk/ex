@@ -29,6 +29,9 @@ namespace ex
                             Console.WriteLine($"File {i}.txt: {arr[j]}");
                             Console.WriteLine($"File {i}.txt: {arr[j+1]}");
                             mult = arr[j] * arr[j+1];
+                            temp = summ;
+                            summ += mult;
+                            count++;
                         }
                     }
                     catch (FileNotFoundException)
@@ -36,6 +39,8 @@ namespace ex
                         using (StreamWriter writer = new StreamWriter("no_file.txt", true))
                         {
                             writer.WriteLine(i + ".txt");
+                            summ = temp;
+                            count--;
                         }
                         continue;
                     }
@@ -44,6 +49,8 @@ namespace ex
                         using (StreamWriter writer = new StreamWriter("bad_data.txt", true))
                         {
                             writer.WriteLine(i + ".txt");
+                            summ = temp;
+                            count--;
                         }
                         continue;
                     }
@@ -52,12 +59,16 @@ namespace ex
                         using (StreamWriter writer = new StreamWriter("overflow.txt", true))
                         {
                             writer.WriteLine(i + ".txt");
+                            summ = temp;
+                            count--;
                         }
                         continue;
                     }
                     catch (InvalidDataException ex)
                     {
                         Console.WriteLine(ex.Message);
+                        summ = temp;
+                        count--;
                     }
                     j += 2;
                 }
