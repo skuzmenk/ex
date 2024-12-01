@@ -10,14 +10,13 @@ namespace ex
         {
             int[] arr = new int[40];
             int j = 0;
-            int mult;
-            int summ = 0;
+            double sum = 0;
             int count = 0;
-            int temp = 0;
             try
             {
                 for (int i = 10; i < 30; i++)
                 {
+                    int mult=0;
                     try
                     {
                         using (StreamReader sr = new StreamReader($"{i}.txt"))
@@ -29,9 +28,6 @@ namespace ex
                             Console.WriteLine($"File {i}.txt: {arr[j]}");
                             Console.WriteLine($"File {i}.txt: {arr[j+1]}");
                             mult = arr[j] * arr[j+1];
-                            temp = summ;
-                            summ += mult;
-                            count++;
                         }
                     }
                     catch (FileNotFoundException)
@@ -39,8 +35,6 @@ namespace ex
                         using (StreamWriter writer = new StreamWriter("no_file.txt", true))
                         {
                             writer.WriteLine(i + ".txt");
-                            summ = temp;
-                            count--;
                         }
                         continue;
                     }
@@ -49,8 +43,6 @@ namespace ex
                         using (StreamWriter writer = new StreamWriter("bad_data.txt", true))
                         {
                             writer.WriteLine(i + ".txt");
-                            summ = temp;
-                            count--;
                         }
                         continue;
                     }
@@ -59,25 +51,23 @@ namespace ex
                         using (StreamWriter writer = new StreamWriter("overflow.txt", true))
                         {
                             writer.WriteLine(i + ".txt");
-                            summ = temp;
-                            count--;
                         }
                         continue;
                     }
                     catch (InvalidDataException ex)
                     {
                         Console.WriteLine(ex.Message);
-                        summ = temp;
-                        count--;
                     }
                     j += 2;
+                    count++;
+                    sum += (double)mult;
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine("Unexpected exception: " + e.Message);
             }
-            Console.WriteLine(summ/count);
+            Console.WriteLine(sum/count);
             Console.ReadLine();
         }
     }
