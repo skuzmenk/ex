@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace ex
 {
@@ -9,6 +10,10 @@ namespace ex
         {
             int[] arr = new int[40];
             int j = 0;
+            int mult;
+            int summ = 0;
+            int count = 0;
+            int temp = 0;
             try
             {
                 for (int i = 10; i < 30; i++)
@@ -19,24 +24,36 @@ namespace ex
                         {
                             string line = sr.ReadLine();
                             string line1 = sr.ReadLine();
-                            if (string.IsNullOrEmpty(line))
-                            {
-                                throw new InvalidDataException($"File {i}.txt contains no valid data.");
-                            }
-
                             arr[j] = int.Parse(line);
                             arr[j+1] = int.Parse(line1);
                             Console.WriteLine($"File {i}.txt: {arr[j]}");
                             Console.WriteLine($"File {i}.txt: {arr[j+1]}");
+                            mult = arr[j] * arr[j+1];
                         }
                     }
                     catch (FileNotFoundException)
                     {
-                        Console.WriteLine($"File {i}.txt does not exist.");
+                        using (StreamWriter writer = new StreamWriter("no_file.txt", true))
+                        {
+                            writer.WriteLine(i + ".txt");
+                        }
+                        continue;
                     }
                     catch (FormatException)
                     {
-                        Console.WriteLine($"File {i}.txt contains invalid data.");
+                        using (StreamWriter writer = new StreamWriter("bad_data.txt", true))
+                        {
+                            writer.WriteLine(i + ".txt");
+                        }
+                        continue;
+                    }
+                    catch (OverflowException)
+                    {
+                        using (StreamWriter writer = new StreamWriter("overflow.txt", true))
+                        {
+                            writer.WriteLine(i + ".txt");
+                        }
+                        continue;
                     }
                     catch (InvalidDataException ex)
                     {
@@ -49,7 +66,7 @@ namespace ex
             {
                 Console.WriteLine("Unexpected exception: " + e.Message);
             }
-
+            Console.WriteLine(summ/count);
             Console.ReadLine();
         }
     }
