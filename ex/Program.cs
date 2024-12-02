@@ -25,9 +25,7 @@ namespace ex
                             string line1 = sr.ReadLine();
                             arr[j] = int.Parse(line);
                             arr[j+1] = int.Parse(line1);
-                            Console.WriteLine($"File {i}.txt: {arr[j]}");
-                            Console.WriteLine($"File {i}.txt: {arr[j+1]}");
-                            mult = arr[j] * arr[j+1];
+                            mult = checked(arr[j] * arr[j+1]);
                         }
                     }
                     catch (FileNotFoundException)
@@ -53,10 +51,6 @@ namespace ex
                             writer.WriteLine(i + ".txt");
                         }
                         continue;
-                    }
-                    catch (InvalidDataException ex)
-                    {
-                        Console.WriteLine(ex.Message);
                     }
                     j += 2;
                     count++;
